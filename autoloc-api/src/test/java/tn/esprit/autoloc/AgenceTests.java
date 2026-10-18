@@ -9,12 +9,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import tn.esprit.autoloc.domain.Agence;
 import tn.esprit.autoloc.domain.CategorieVehicule;
 import tn.esprit.autoloc.domain.StatutVehicule;
 import tn.esprit.autoloc.domain.Vehicule;
 import tn.esprit.autoloc.repository.IAgenceRepository;
+import tn.esprit.autoloc.service.IAgenceService;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -26,6 +28,10 @@ public class AgenceTests {
     // Q3 : ajouter un attribut de type IAgenceRepository
     @Autowired
     private IAgenceRepository fullAgenceRepository;
+
+    // Chap 5: Question 12 : ajouter un attribut agenceService
+    @Autowired
+    private IAgenceService agenceService;
     // Q6 : rendre addAgence privée et l'enlever des tests
     private void addAgence(CrudRepository<Agence, ?> repository) {
         // Q7 : créer l'agence
@@ -159,9 +165,25 @@ public class AgenceTests {
 
         org.junit.jupiter.api.Assertions.fail(stringBuilder.toString());
     }
+
+    // Chap 5: Question 13 : méthode de test createAgence
+    @Test
+    void createAgence() {
+        Agence agence = new Agence();
+        agence.setNom("Agence Test");
+        agence.setVille("Tunis");
+        agence.setAdresse("Test Address");
+        agence.setTelephone("12345678");
+
+        Agence created = agenceService.create(agence);
+        org.junit.jupiter.api.Assertions.assertNotNull(created);
+        org.junit.jupiter.api.Assertions.assertNotNull(created.getIdAgence());
+        org.junit.jupiter.api.Assertions.assertEquals("Agence Test", created.getNom());
+    }
 }
 
-// Q5 : interface dans le même fichier
+// Chap 5: Question 11 : annotation Bean la plus appropriée
+@Repository
 interface AgenceRepositoryMock extends CrudRepository<Agence, Long> {}
 
 
