@@ -1,6 +1,7 @@
 package tn.esprit.autoloc.domain;
 import jakarta.persistence .*;
 import lombok .*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.math .*;
 import java.util.List;
 
@@ -36,7 +37,9 @@ public class Vehicule {
     @Column(nullable = false, length = 20)
     private StatutVehicule statut;
 
+    // Chap 6 : question 16 - résolution du problème cyclique avec @JsonIgnore
     @ManyToOne
+    @JsonIgnore
     private Agence agence;
 
     // Q16 : Relation Vehicule-Reservation (LAZY, cascade REMOVE)
