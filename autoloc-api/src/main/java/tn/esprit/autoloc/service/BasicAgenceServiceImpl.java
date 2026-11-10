@@ -3,8 +3,10 @@ package tn.esprit.autoloc.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.Utils;
+import tn.esprit.autoloc.calcul.VehiculeOffre;
 import tn.esprit.autoloc.domain.Agence;
 import tn.esprit.autoloc.exception.ResourceNotFoundException;
+import tn.esprit.autoloc.io.RapportGeneratorFactory;
 import tn.esprit.autoloc.repository.IAgenceRepository;
 
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BasicAgenceServiceImpl implements IAgenceService {
     private final IAgenceRepository repository;
+    // Chap 8: Question 14 - injection de RapportGeneratorFactory
+    private final RapportGeneratorFactory rapportGeneratorFactory;
 
     // Chap 5: Question 7
     @Override
@@ -78,5 +82,13 @@ public class BasicAgenceServiceImpl implements IAgenceService {
     @Override
     public boolean hasVehicules(Long id) {
         return false;
+    }
+
+    // Chap 8: Question 14 - méthode simuler utilisant la Factory
+    @Override
+    public String simuler(Long agenceId, int nombreJours, VehiculeOffre offre) {
+        Agence agence = findById(agenceId);
+        IRapportGenerator rapportGenerator = rapportGeneratorFactory.createRapportGenerator();
+        return rapportGenerator.generer(agence, nombreJours, offre);
     }
 }

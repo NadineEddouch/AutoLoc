@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.autoloc.calcul.VehiculeOffre;
 import tn.esprit.autoloc.domain.Agence;
 import tn.esprit.autoloc.service.IAgenceService;
 
@@ -76,5 +77,19 @@ public class AgenceController {
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
         agenceService.deleteById(id);
+    }
+
+    // Chap 8 : question 10 - API de simulation de tarifs d'une agence
+    @Operation(summary = "Simuler les tarifs d'une agence")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Rapport de simulation généré"),
+        @ApiResponse(responseCode = "404", description = "Agence introuvable")
+    })
+    @GetMapping("/{id}/simuler")
+    public String simuler(
+            @Parameter(description = "Identifiant de l'agence") @PathVariable Long id,
+            @Parameter(description = "Nombre de jours de location") @RequestParam int nombreJours,
+            @Parameter(description = "Type d'offre (STANDARD, WEEKEND, LONGUE_DUREE)") @RequestParam VehiculeOffre offre) {
+        return agenceService.simuler(id, nombreJours, offre);
     }
 }

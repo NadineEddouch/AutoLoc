@@ -3,8 +3,10 @@ package tn.esprit.autoloc.service;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.Utils;
+import tn.esprit.autoloc.calcul.VehiculeOffre;
 import tn.esprit.autoloc.domain.Agence;
 import tn.esprit.autoloc.domain.Vehicule;
+import tn.esprit.autoloc.io.RapportGeneratorFactory;
 import tn.esprit.autoloc.repository.IAgenceRepository;
 import tn.esprit.autoloc.repository.VehiculeRepository;
 
@@ -17,10 +19,16 @@ public class AgenceServiceImpl extends GenericServiceImpl<Agence, Long, IAgenceR
 
     // Chap 6 : question 25 - injection de VehiculeRepository pour désaffecter les véhicules
     private final VehiculeRepository vehiculeRepository;
+    // Chap 8 : question 8 - injection de IVehiculeService pour calculer les tarifs
+    private final IVehiculeService vehiculeService;
+    // Chap 8 : question 14 - injection de RapportGeneratorFactory pour générer les rapports
+    private final RapportGeneratorFactory rapportGeneratorFactory;
 
-    public AgenceServiceImpl(IAgenceRepository repository, VehiculeRepository vehiculeRepository) {
+    public AgenceServiceImpl(IAgenceRepository repository, VehiculeRepository vehiculeRepository, IVehiculeService vehiculeService, RapportGeneratorFactory rapportGeneratorFactory) {
         super(repository);
         this.vehiculeRepository = vehiculeRepository;
+        this.vehiculeService = vehiculeService;
+        this.rapportGeneratorFactory = rapportGeneratorFactory;
     }
 
     @Override
@@ -65,5 +73,13 @@ public class AgenceServiceImpl extends GenericServiceImpl<Agence, Long, IAgenceR
         }
         // Supprimer l'agence
         super.deleteById(id);
+    }
+
+    // Chap 8: Question 14 - méthode simuler utilisant la Factory et le Decorator
+    @Override
+    public String simuler(Long agenceId, int nombreJours, VehiculeOffre offre) {
+        Agence agence = findById(agenceId);
+        IRapportGenerator rapportGenerator = rapportGeneratorFactory.createRapportGenerator();
+        return rapportGenerator.generer(agence, nombreJours, offre);
     }
 }
