@@ -33,4 +33,27 @@ public class EquipementServiceImpl extends GenericServiceImpl<Equipement, Long, 
     public boolean check(Equipement equipement, boolean isNew) {
         return Utils.isNotEmpty(equipement.getLibelle());
     }
+
+    // Chap 9: Question 9 - désaffecter les véhicules avant suppression
+    @Override
+    public void desaffecterVehicules(Long equipementId) {
+        Equipement equipement = findById(equipementId);
+        if (equipement.getVehicules() != null && !equipement.getVehicules().isEmpty()) {
+            // Nettoyer la relation des deux côtés
+            for (tn.esprit.autoloc.domain.Vehicule vehicule : equipement.getVehicules()) {
+                if (vehicule.getEquipements() != null) {
+                    vehicule.getEquipements().remove(equipement);
+                }
+            }
+            equipement.getVehicules().clear();
+            repository.save(equipement);
+        }
+    }
+
+    // Chap 9: Question 9 - surcharger deleteById pour désaffecter d'abord
+    @Override
+    public void deleteById(Long id) {
+        desaffecterVehicules(id);
+        super.deleteById(id);
+    }
 }

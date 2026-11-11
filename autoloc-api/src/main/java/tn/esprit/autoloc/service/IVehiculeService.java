@@ -5,6 +5,12 @@ import tn.esprit.autoloc.domain.Vehicule;
 
 // Chap 5: Question 20
 // Chap 8: Question 6-7 - méthode calculTarif avec paramètre offre
+// Chap 9: Question 1 - méthode désaffecter
+// Chap 9: Question 4 - méthode affecterAgence
+// Chap 9: Question 6 - méthode affecterEquipement
 public interface IVehiculeService extends IGenericService<Vehicule, Long> {
     double calculTarif(Long vehiculeId, int nombreJours, VehiculeOffre offre);
+    void desaffecter(Long vehiculeId);
+    void affecterAgence(Long vehiculeId, Long agenceId);
+    void affecterEquipement(Long vehiculeId, Long equipementId);
 }

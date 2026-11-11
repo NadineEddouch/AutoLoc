@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.calcul.VehiculeOffre;
 import tn.esprit.autoloc.domain.Agence;
+import tn.esprit.autoloc.domain.Employe;
 import tn.esprit.autoloc.service.IAgenceService;
 
 import java.util.List;
@@ -91,5 +92,18 @@ public class AgenceController {
             @Parameter(description = "Nombre de jours de location") @RequestParam int nombreJours,
             @Parameter(description = "Type d'offre (STANDARD, WEEKEND, LONGUE_DUREE)") @RequestParam VehiculeOffre offre) {
         return agenceService.simuler(id, nombreJours, offre);
+    }
+
+    // Chap 9: Question 13 - API pour ajouter une liste d'employés à une agence
+    @Operation(summary = "Ajouter des employés à une agence")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Employés ajoutés avec succès"),
+        @ApiResponse(responseCode = "404", description = "Agence introuvable")
+    })
+    @PostMapping("/{id}/ajouter-employes")
+    public Agence ajouterEmployes(
+            @Parameter(description = "Identifiant de l'agence") @PathVariable Long id,
+            @RequestBody List<Employe> employes) {
+        return agenceService.ajouterEmployes(id, employes);
     }
 }

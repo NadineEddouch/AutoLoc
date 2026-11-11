@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,6 +27,17 @@ public class Employe {
     private RoleEmploye role;
 
     // Q16 : Relation Employe-Agence (ManyToOne)
+    // Chap 9: Question 10 - gestion symétrique de la relation
+    // Chap 9: Question 13 - @JsonIgnore pour éviter la référence circulaire
     @ManyToOne
+    @JsonIgnore
     private Agence agence;
+
+    // Chap 9: Question 10 - méthode helper pour définir l'agence de manière symétrique
+    public void setAgence(Agence agence) {
+        this.agence = agence;
+        if (agence != null && !agence.getEmployes().contains(this)) {
+            agence.getEmployes().add(this);
+        }
+    }
 }

@@ -49,4 +49,41 @@ public class VehiculeController {
     public void deleteById(@PathVariable Long id) {
         vehiculeService.deleteById(id);
     }
+
+    // Chap 9: Question 2 - API pour désaffecter un véhicule de son agence
+    @Operation(summary = "Désaffecter un véhicule de son agence")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Véhicule désaffecté avec succès"),
+        @ApiResponse(responseCode = "404", description = "Véhicule introuvable")
+    })
+    @PutMapping("/{id}/desaffecter")
+    public void desaffecter(@Parameter(description = "Identifiant du véhicule") @PathVariable Long id) {
+        vehiculeService.desaffecter(id);
+    }
+
+    // Chap 9: Question 5 - API pour affecter une agence à un véhicule (les deux identifiants dans l'URL)
+    @Operation(summary = "Affecter une agence à un véhicule")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Véhicule affecté à l'agence avec succès"),
+        @ApiResponse(responseCode = "404", description = "Véhicule ou agence introuvable")
+    })
+    @PutMapping("/{vehiculeId}/affecter/{agenceId}")
+    public void affecterAgence(
+            @Parameter(description = "Identifiant du véhicule") @PathVariable Long vehiculeId,
+            @Parameter(description = "Identifiant de l'agence") @PathVariable Long agenceId) {
+        vehiculeService.affecterAgence(vehiculeId, agenceId);
+    }
+
+    // Chap 9: Question 7 - API pour affecter un équipement à un véhicule
+    @Operation(summary = "Affecter un équipement à un véhicule")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Équipement affecté au véhicule avec succès"),
+        @ApiResponse(responseCode = "404", description = "Véhicule ou équipement introuvable")
+    })
+    @PutMapping("/{vehiculeId}/affecter-equipement/{equipementId}")
+    public void affecterEquipement(
+            @Parameter(description = "Identifiant du véhicule") @PathVariable Long vehiculeId,
+            @Parameter(description = "Identifiant de l'équipement") @PathVariable Long equipementId) {
+        vehiculeService.affecterEquipement(vehiculeId, equipementId);
+    }
 }
