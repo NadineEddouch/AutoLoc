@@ -3,7 +3,6 @@ package tn.esprit.autoloc.web.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +26,7 @@ public class AgenceController {
     private final IAgenceService agenceService;
 
     @Operation(summary = "Lister toutes les agences")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Liste des agences trouvée")
-    })
+    @ApiResponse(responseCode = "200", description = "Liste des agences trouvée")
     @GetMapping
     public List<Agence> findAll() {
         return agenceService.findAll();
@@ -37,10 +34,8 @@ public class AgenceController {
 
     // Chap 6 : question 19 - consultation d'une agence par ID via le chemin de l'URL
     @Operation(summary = "Consulter une agence par son ID")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Agence trouvée"),
-        @ApiResponse(responseCode = "404", description = "Agence introuvable")
-    })
+    @ApiResponse(responseCode = "200", description = "Agence trouvée")
+    @ApiResponse(responseCode = "404", description = "Agence introuvable")
     @GetMapping("/{id}")
     public Agence findById(@Parameter(description = "Identifiant de l'agence") @PathVariable Long id) {
         return agenceService.findById(id);
@@ -48,10 +43,8 @@ public class AgenceController {
 
     // Chap 6 : question 21 - API d'ajout d'une agence (POST)
     @Operation(summary = "Créer une nouvelle agence")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Agence créée avec succès"),
-        @ApiResponse(responseCode = "400", description = "Données invalides")
-    })
+    @ApiResponse(responseCode = "200", description = "Agence créée avec succès")
+    @ApiResponse(responseCode = "400", description = "Données invalides")
     @PostMapping
     public Agence create(@RequestBody Agence agence) {
         return agenceService.create(agence);
@@ -59,11 +52,9 @@ public class AgenceController {
 
     // Chap 6 : question 24 - API de modification d'une agence (PUT)
     @Operation(summary = "Modifier une agence existante")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Agence modifiée avec succès"),
-        @ApiResponse(responseCode = "404", description = "Agence introuvable"),
-        @ApiResponse(responseCode = "400", description = "Données invalides")
-    })
+    @ApiResponse(responseCode = "200", description = "Agence modifiée avec succès")
+    @ApiResponse(responseCode = "404", description = "Agence introuvable")
+    @ApiResponse(responseCode = "400", description = "Données invalides")
     @PutMapping("/{id}")
     public Agence update(@PathVariable Long id, @RequestBody Agence agence) {
         return agenceService.update(id, agence);
@@ -71,10 +62,8 @@ public class AgenceController {
 
     // Chap 6 : question 25 - API de suppression d'une agence (DELETE)
     @Operation(summary = "Supprimer une agence")
-    @ApiResponses({
-        @ApiResponse(responseCode = "204", description = "Agence supprimée avec succès"),
-        @ApiResponse(responseCode = "404", description = "Agence introuvable")
-    })
+    @ApiResponse(responseCode = "204", description = "Agence supprimée avec succès")
+    @ApiResponse(responseCode = "404", description = "Agence introuvable")
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
         agenceService.deleteById(id);
@@ -82,10 +71,8 @@ public class AgenceController {
 
     // Chap 8 : question 10 - API de simulation de tarifs d'une agence
     @Operation(summary = "Simuler les tarifs d'une agence")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Rapport de simulation généré"),
-        @ApiResponse(responseCode = "404", description = "Agence introuvable")
-    })
+    @ApiResponse(responseCode = "200", description = "Rapport de simulation généré")
+    @ApiResponse(responseCode = "404", description = "Agence introuvable")
     @GetMapping("/{id}/simuler")
     public String simuler(
             @Parameter(description = "Identifiant de l'agence") @PathVariable Long id,
@@ -96,10 +83,8 @@ public class AgenceController {
 
     // Chap 9: Question 13 - API pour ajouter une liste d'employés à une agence
     @Operation(summary = "Ajouter des employés à une agence")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Employés ajoutés avec succès"),
-        @ApiResponse(responseCode = "404", description = "Agence introuvable")
-    })
+    @ApiResponse(responseCode = "200", description = "Employés ajoutés avec succès")
+    @ApiResponse(responseCode = "404", description = "Agence introuvable")
     @PostMapping("/{id}/ajouter-employes")
     public Agence ajouterEmployes(
             @Parameter(description = "Identifiant de l'agence") @PathVariable Long id,

@@ -1,7 +1,7 @@
 package tn.esprit.autoloc;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import tn.esprit.autoloc.domain.Agence;
 import tn.esprit.autoloc.domain.CategorieVehicule;
 import tn.esprit.autoloc.domain.StatutVehicule;
@@ -18,7 +17,6 @@ import tn.esprit.autoloc.domain.Vehicule;
 import tn.esprit.autoloc.repository.IAgenceRepository;
 import tn.esprit.autoloc.service.IAgenceService;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class AgenceTests {
     // Q2 : renommer l'attribut en basicAgenceRepository
@@ -71,14 +69,17 @@ public class AgenceTests {
         repository.save(agence);
     }
 
+    // Atelier 10 - Question 10 : Désactiver les tests unitaires des anciens ateliers
     // Q7 : méthode de test basicAddAgence
     @Test
+    @Disabled("Désactivé - Atelier ancien")
     void basicAddAgence() {
         addAgence(basicAgenceRepository);
     }
 
     // Q7 : méthode de test fullAddAgence
     @Test
+    @Disabled("Désactivé - Atelier ancien")
     void fullAddAgence() {
         addAgence(fullAgenceRepository);
     }
@@ -109,18 +110,21 @@ public class AgenceTests {
 
     // Q10 : méthode de test basicLoadAgence
     @Test
+    @Disabled("Désactivé - Atelier ancien")
     void basicLoadAgence() {
         loadAgence(basicAgenceRepository, "Basic (CrudRepository)");
     }
 
     // Q10 : méthode de test fullLoadAgence
     @Test
+    @Disabled("Désactivé - Atelier ancien")
     void fullLoadAgence() {
         loadAgence(fullAgenceRepository, "Full (JpaRepository)");
     }
 
     // Q11 : méthode loadSortedAgences
     @Test
+    @Disabled("Désactivé - Atelier ancien")
     void loadSortedAgences() {
         // Q12 : charger toutes les agences triées par id décroissants avec Sort
         StringBuilder stringBuilder = new StringBuilder();
@@ -138,6 +142,7 @@ public class AgenceTests {
 
     // Q15 : méthode loadPagedAgences
     @Test
+    @Disabled("Désactivé - Atelier ancien")
     void loadPagedAgences() {
         // Q16 : charger agences triées par id décroissant et paginer par lot de 2
         StringBuilder stringBuilder = new StringBuilder();
@@ -168,6 +173,7 @@ public class AgenceTests {
 
     // Chap 5: Question 13 : méthode de test createAgence
     @Test
+    @Disabled("Désactivé - Atelier ancien")
     void createAgence() {
         Agence agence = new Agence();
         agence.setNom("Agence Test");

@@ -6,21 +6,22 @@ import tn.esprit.autoloc.exception.ResourceNotFoundException;
 import java.util.List;
 
 // Chap 5: Question 15 - Classe générique abstraite
-public abstract class GenericServiceImpl<T, ID, R extends CrudRepository<T, ID>> implements IGenericService<T, ID> {
+// Atelier 10 - Question 11 : Renommer les types génériques pour SonarQube
+public abstract class GenericServiceImpl<T1, T2, T3 extends CrudRepository<T1, T2>> implements IGenericService<T1, T2> {
 
-    protected final R repository;
+    protected final T3 repository;
 
-    protected GenericServiceImpl(R repository) {
+    protected GenericServiceImpl(T3 repository) {
         this.repository = repository;
     }
 
     @Override
-    public boolean check(T entity, boolean isNew) {
+    public boolean check(T1 entity, boolean isNew) {
         return true;
     }
 
     @Override
-    public T create(T entity) {
+    public T1 create(T1 entity) {
         if (getId(entity) != null) {
             throw new IllegalArgumentException("L'identifiant doit être vide à la création");
         }
@@ -31,19 +32,19 @@ public abstract class GenericServiceImpl<T, ID, R extends CrudRepository<T, ID>>
     }
 
     @Override
-    public T findById(ID id) {
+    public T1 findById(T2 id) {
         return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(getEntityName() + " introuvable", id.toString()));
     }
 
     @Override
-    public List<T> findAll() {
-        return (List<T>) repository.findAll();
+    public List<T1> findAll() {
+        return (List<T1>) repository.findAll(); // TODO: SonarQube S1905 - Le cast est nécessaire car CrudRepository.findAll() retourne Iterable
     }
 
     @Override
-    public T update(ID id, T entity) {
-        T persisted = findById(id);
+    public T1 update(T2 id, T1 entity) {
+        T1 persisted = findById(id);
         if (!check(entity, false)) {
             throw new IllegalArgumentException(getEntityName() + " invalide");
         }
@@ -52,7 +53,7 @@ public abstract class GenericServiceImpl<T, ID, R extends CrudRepository<T, ID>>
     }
 
     @Override
-    public void deleteById(ID id) {
+    public void deleteById(T2 id) {
         if (!repository.existsById(id)) {
             throw new ResourceNotFoundException(getEntityName() + " introuvable", id.toString());
         }
@@ -61,6 +62,6 @@ public abstract class GenericServiceImpl<T, ID, R extends CrudRepository<T, ID>>
 
     // Méthodes abstraites à implémenter par les classes filles
     protected abstract String getEntityName();
-    protected abstract ID getId(T entity);
-    protected abstract void setFields(T source, T target);
+    protected abstract T2 getId(T1 entity);
+    protected abstract void setFields(T1 source, T1 target);
 }

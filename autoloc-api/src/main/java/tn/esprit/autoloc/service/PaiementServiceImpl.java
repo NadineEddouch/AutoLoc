@@ -24,6 +24,6 @@ public class PaiementServiceImpl implements IPaiementService {
 
     @Override
     public List<Paiement> findAll() {
-        return (List<Paiement>) repository.findAll();
+        return repository.findAll();
     }
 }

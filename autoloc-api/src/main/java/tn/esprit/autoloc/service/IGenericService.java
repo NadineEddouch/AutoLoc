@@ -1,6 +1,7 @@
 package tn.esprit.autoloc.service;
 
 // Chap 8 : question 2 - interface générique complète qui étend les trois interfaces
-public interface IGenericService<T, ID> extends IReadService<T, ID>, IWriteService<T, ID>, IDeleteService<ID> {
-    boolean check(T entity, boolean isNew);
+// Atelier 10 - Question 11 : Renommer les types génériques pour SonarQube
+public interface IGenericService<T1, T2> extends IReadService<T1, T2>, IWriteService<T1, T2>, IDeleteService<T2> {
+    boolean check(T1 entity, boolean isNew);
 }

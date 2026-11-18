@@ -3,7 +3,6 @@ package tn.esprit.autoloc.web.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -52,10 +51,8 @@ public class VehiculeController {
 
     // Chap 9: Question 2 - API pour désaffecter un véhicule de son agence
     @Operation(summary = "Désaffecter un véhicule de son agence")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Véhicule désaffecté avec succès"),
-        @ApiResponse(responseCode = "404", description = "Véhicule introuvable")
-    })
+    @ApiResponse(responseCode = "200", description = "Véhicule désaffecté avec succès")
+    @ApiResponse(responseCode = "404", description = "Véhicule introuvable")
     @PutMapping("/{id}/desaffecter")
     public void desaffecter(@Parameter(description = "Identifiant du véhicule") @PathVariable Long id) {
         vehiculeService.desaffecter(id);
@@ -63,10 +60,8 @@ public class VehiculeController {
 
     // Chap 9: Question 5 - API pour affecter une agence à un véhicule (les deux identifiants dans l'URL)
     @Operation(summary = "Affecter une agence à un véhicule")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Véhicule affecté à l'agence avec succès"),
-        @ApiResponse(responseCode = "404", description = "Véhicule ou agence introuvable")
-    })
+    @ApiResponse(responseCode = "200", description = "Véhicule affecté à l'agence avec succès")
+    @ApiResponse(responseCode = "404", description = "Véhicule ou agence introuvable")
     @PutMapping("/{vehiculeId}/affecter/{agenceId}")
     public void affecterAgence(
             @Parameter(description = "Identifiant du véhicule") @PathVariable Long vehiculeId,
@@ -76,10 +71,8 @@ public class VehiculeController {
 
     // Chap 9: Question 7 - API pour affecter un équipement à un véhicule
     @Operation(summary = "Affecter un équipement à un véhicule")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Équipement affecté au véhicule avec succès"),
-        @ApiResponse(responseCode = "404", description = "Véhicule ou équipement introuvable")
-    })
+    @ApiResponse(responseCode = "200", description = "Équipement affecté au véhicule avec succès")
+    @ApiResponse(responseCode = "404", description = "Véhicule ou équipement introuvable")
     @PutMapping("/{vehiculeId}/affecter-equipement/{equipementId}")
     public void affecterEquipement(
             @Parameter(description = "Identifiant du véhicule") @PathVariable Long vehiculeId,

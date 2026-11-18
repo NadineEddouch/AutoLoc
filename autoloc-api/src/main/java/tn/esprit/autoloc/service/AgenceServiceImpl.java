@@ -15,23 +15,21 @@ import tn.esprit.autoloc.repository.VehiculeRepository;
 import java.util.List;
 
 // Chap 5: Question 17 - AgenceServiceImpl basé sur GenericServiceImpl
+// Atelier 10 - Question 11 : Renommer les types génériques pour SonarQube
 @Service
 @Primary
 public class AgenceServiceImpl extends GenericServiceImpl<Agence, Long, IAgenceRepository> implements IAgenceService {
 
     // Chap 6 : question 25 - injection de VehiculeRepository pour désaffecter les véhicules
     private final VehiculeRepository vehiculeRepository;
-    // Chap 8 : question 8 - injection de IVehiculeService pour calculer les tarifs
-    private final IVehiculeService vehiculeService;
     // Chap 8 : question 14 - injection de RapportGeneratorFactory pour générer les rapports
     private final RapportGeneratorFactory rapportGeneratorFactory;
     // Chap 9: Question 12 - injection de IEmployeService pour insérer les employés
     private final IGenericService<Employe, Long> employeService;
 
-    public AgenceServiceImpl(IAgenceRepository repository, VehiculeRepository vehiculeRepository, IVehiculeService vehiculeService, RapportGeneratorFactory rapportGeneratorFactory, IGenericService<Employe, Long> employeService) {
+    public AgenceServiceImpl(IAgenceRepository repository, VehiculeRepository vehiculeRepository, RapportGeneratorFactory rapportGeneratorFactory, IGenericService<Employe, Long> employeService) {
         super(repository);
         this.vehiculeRepository = vehiculeRepository;
-        this.vehiculeService = vehiculeService;
         this.rapportGeneratorFactory = rapportGeneratorFactory;
         this.employeService = employeService;
     }

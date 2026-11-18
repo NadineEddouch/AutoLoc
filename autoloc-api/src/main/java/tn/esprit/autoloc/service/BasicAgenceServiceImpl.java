@@ -48,7 +48,7 @@ public class BasicAgenceServiceImpl implements IAgenceService {
 
     @Override
     public List<Agence> findAll() {
-        return (List<Agence>) repository.findAll();
+        return repository.findAll();
     }
 
     @Override

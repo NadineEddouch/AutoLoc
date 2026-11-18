@@ -24,10 +24,7 @@ public class ConsoleRapportDecorator implements IRapportGenerator {
         System.out.println("Téléphone: " + agence.getTelephone());
         System.out.println("------------------------");
 
-        // Déléguer la génération du rapport au générateur décoré
-        String rapport = rapportGenerator.generer(agence, nombreJours, offre);
-
-        // Retourner le total (selon l'énoncé)
-        return rapport;
+        // Déléguer la génération du rapport au générateur décoré et retourner directement
+        return rapportGenerator.generer(agence, nombreJours, offre);
     }
 }
