@@ -28,4 +28,9 @@ public class Maintenance {
     // Q19 : Relation Maintenance-Vehicule (ManyToOne)
     @ManyToOne
     private Vehicule vehicule;
+
+    // Méthode réservée pour une future implémentation de la date de maintenance
+    public void setDateMaintenance(LocalDate now) {
+        throw new UnsupportedOperationException("Méthode non implémentée");
+    }
 }

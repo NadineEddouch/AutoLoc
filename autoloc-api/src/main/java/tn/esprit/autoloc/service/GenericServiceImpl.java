@@ -39,7 +39,7 @@ public abstract class GenericServiceImpl<T1, T2, T3 extends CrudRepository<T1, T
 
     @Override
     public List<T1> findAll() {
-        return (List<T1>) repository.findAll(); // TODO: SonarQube S1905 - Le cast est nécessaire car CrudRepository.findAll() retourne Iterable
+        return (List<T1>) repository.findAll();
     }
 
     @Override

@@ -1,5 +1,7 @@
 package tn.esprit.autoloc.io;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import tn.esprit.autoloc.calcul.VehiculeOffre;
 import tn.esprit.autoloc.domain.Agence;
@@ -9,6 +11,7 @@ import tn.esprit.autoloc.service.IRapportGenerator;
 @Component
 public class ConsoleRapportDecorator implements IRapportGenerator {
 
+    private static final Logger logger = LoggerFactory.getLogger(ConsoleRapportDecorator.class);
     private final IRapportGenerator rapportGenerator;
 
     public ConsoleRapportDecorator(IRapportGenerator rapportGenerator) {
@@ -18,11 +21,11 @@ public class ConsoleRapportDecorator implements IRapportGenerator {
     @Override
     public String generer(Agence agence, int nombreJours, VehiculeOffre offre) {
         // Afficher l'en-tête sur la console
-        System.out.println("=== RAPPORT CONSOLE ===");
-        System.out.println("ID: " + agence.getIdAgence());
-        System.out.println("Nom: " + agence.getNom());
-        System.out.println("Téléphone: " + agence.getTelephone());
-        System.out.println("------------------------");
+        logger.info("=== RAPPORT CONSOLE ===");
+        logger.info("ID: {}", agence.getIdAgence());
+        logger.info("Nom: {}", agence.getNom());
+        logger.info("Téléphone: {}", agence.getTelephone());
+        logger.info("------------------------");
 
         // Déléguer la génération du rapport au générateur décoré et retourner directement
         return rapportGenerator.generer(agence, nombreJours, offre);

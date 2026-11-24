@@ -22,8 +22,7 @@ public class BasicRapportGenerator implements IRapportGenerator {
     @Override
     public String generer(Agence agence, int nombreJours, VehiculeOffre offre) {
         // En-tête du rapport
-        StringBuilder rapport = new StringBuilder();
-        rapport.append("=== RAPPORT D'AGENCE ===\n");
+        StringBuilder rapport = new StringBuilder("=== RAPPORT D'AGENCE ===\n");
         rapport.append("ID: ").append(agence.getIdAgence()).append("\n");
         rapport.append("Nom: ").append(agence.getNom()).append("\n");
         rapport.append("Téléphone: ").append(agence.getTelephone()).append("\n");
