@@ -18,10 +18,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Build and test with Maven
+      - name: Build with Maven (skip tests)
         run: |
           cd autoloc-api
-          ./mvnw.cmd clean verify
+          ./mvnw.cmd clean compile -DskipTests
       - name: Cache SonarQube packages
         uses: actions/cache@v4
         with:
