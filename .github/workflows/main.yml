@@ -10,11 +10,11 @@ jobs:
     name: Build
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Set up JDK 17
-        uses: actions/setup-java@99b8673ffbbfbcb693ee235f97904be73859ec5f  # v4.2.1
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
@@ -23,13 +23,13 @@ jobs:
           cd autoloc-api
           ./mvnw.cmd clean compile -DskipTests
       - name: Cache SonarQube packages
-        uses: actions/cache@0c45773b623be80834c2c519a876d69258fcebc3  # v4.0.2
+        uses: actions/cache@v4
         with:
           path: ~\sonar\cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@84d80c2ce3082443314f32c6c5a0de9d6667e4eb  # v8.5.0
+        uses: SonarSource/sonarqube-scan-action@v8.5.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: https://sonarcloud.io
