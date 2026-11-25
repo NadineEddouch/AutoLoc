@@ -1,11 +1,8 @@
 package tn.esprit.autoloc.web.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.autoloc.domain.Employe;
 import tn.esprit.autoloc.service.IEmployeService;
 import tn.esprit.autoloc.web.dto.EmployeDTO;
 import tn.esprit.autoloc.web.dto.EmployeMapper;

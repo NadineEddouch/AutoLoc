@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.web.dto;
 
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class PaiementDTO {
     private Long idPaiement;
-    private BigDecimal montant;
-    private LocalDate datePaiement;
-    private ModePaiement modePaiement;
+    @NotNull @DecimalMin("0.01") private BigDecimal montant;
+    @NotNull @PastOrPresent private LocalDate datePaiement;
+    @NotNull private ModePaiement modePaiement;
 }

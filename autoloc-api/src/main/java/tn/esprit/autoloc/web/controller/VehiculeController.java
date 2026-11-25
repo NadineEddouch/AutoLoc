@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.domain.Vehicule;
@@ -37,14 +38,14 @@ public class VehiculeController {
 
     @Operation(summary = "Créer un nouveau véhicule")
     @PostMapping
-    public VehiculeDTO create(@RequestBody VehiculeDTO vehiculeDTO) {
+    public VehiculeDTO create(@Valid @RequestBody VehiculeDTO vehiculeDTO) {
         Vehicule vehicule = vehiculeMapper.toEntity(vehiculeDTO);
         return vehiculeMapper.toDto(vehiculeService.create(vehicule));
     }
 
     @Operation(summary = "Modifier un véhicule existant")
     @PutMapping("/{id}")
-    public VehiculeDTO update(@PathVariable Long id, @RequestBody VehiculeDTO vehiculeDTO) {
+    public VehiculeDTO update(@PathVariable Long id, @Valid @RequestBody VehiculeDTO vehiculeDTO) {
         Vehicule vehicule = vehiculeMapper.toEntity(vehiculeDTO);
         return vehiculeMapper.toDto(vehiculeService.update(id, vehicule));
     }

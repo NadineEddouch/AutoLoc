@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.web.dto;
 
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ReservationDTO {
     private Long idReservation;
-    private LocalDate dateDebut;
-    private LocalDate dateFin;
-    private StatutReservation statut;
+    @NotNull private LocalDate dateDebut;
+    @NotNull private LocalDate dateFin;
+    @NotNull private StatutReservation statut;
 }

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.calcul.VehiculeOffre;
@@ -50,7 +51,7 @@ public class AgenceController {
     @ApiResponse(responseCode = "200", description = "Agence créée avec succès")
     @ApiResponse(responseCode = "400", description = "Données invalides")
     @PostMapping
-    public AgenceDTO create(@RequestBody AgenceDTO agenceDTO) {
+    public AgenceDTO create(@Valid @RequestBody AgenceDTO agenceDTO) {
         Agence agence = agenceMapper.toEntity(agenceDTO);
         return agenceMapper.toDto(agenceService.create(agence));
     }
@@ -61,7 +62,7 @@ public class AgenceController {
     @ApiResponse(responseCode = "404", description = "Agence introuvable")
     @ApiResponse(responseCode = "400", description = "Données invalides")
     @PutMapping("/{id}")
-    public AgenceDTO update(@PathVariable Long id, @RequestBody AgenceDTO agenceDTO) {
+    public AgenceDTO update(@PathVariable Long id, @Valid @RequestBody AgenceDTO agenceDTO) {
         Agence agence = agenceMapper.toEntity(agenceDTO);
         return agenceMapper.toDto(agenceService.update(id, agence));
     }
