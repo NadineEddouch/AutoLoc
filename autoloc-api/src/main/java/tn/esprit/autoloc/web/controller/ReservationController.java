@@ -7,44 +7,27 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.domain.Reservation;
 import tn.esprit.autoloc.service.IReservationService;
+import tn.esprit.autoloc.web.dto.ReservationDTO;
+import tn.esprit.autoloc.web.dto.ReservationMapper;
 
 import java.util.List;
 
-// Chap 6 : question 31 - contrôleur Reservation
 @Tag(name = "Reservations", description = "Gestion des réservations")
 @RestController
 @RequestMapping("/reservations")
 @RequiredArgsConstructor
 public class ReservationController {
     private final IReservationService reservationService;
+    private final ReservationMapper reservationMapper;
 
-    @Operation(summary = "Lister toutes les réservations")
     @GetMapping
-    public List<Reservation> findAll() {
-        return reservationService.findAll();
-    }
-
-    @Operation(summary = "Consulter une réservation par son ID")
+    public List<ReservationDTO> findAll() { return reservationMapper.toDtoList(reservationService.findAll()); }
     @GetMapping("/{id}")
-    public Reservation findById(@Parameter(description = "Identifiant de la réservation") @PathVariable Long id) {
-        return reservationService.findById(id);
-    }
-
-    @Operation(summary = "Créer une nouvelle réservation")
+    public ReservationDTO findById(@PathVariable Long id) { return reservationMapper.toDto(reservationService.findById(id)); }
     @PostMapping
-    public Reservation create(@RequestBody Reservation reservation) {
-        return reservationService.create(reservation);
-    }
-
-    @Operation(summary = "Modifier une réservation existante")
+    public ReservationDTO create(@RequestBody ReservationDTO dto) { return reservationMapper.toDto(reservationService.create(reservationMapper.toEntity(dto))); }
     @PutMapping("/{id}")
-    public Reservation update(@PathVariable Long id, @RequestBody Reservation reservation) {
-        return reservationService.update(id, reservation);
-    }
-
-    @Operation(summary = "Supprimer une réservation")
+    public ReservationDTO update(@PathVariable Long id, @RequestBody ReservationDTO dto) { return reservationMapper.toDto(reservationService.update(id, reservationMapper.toEntity(dto))); }
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id) {
-        reservationService.deleteById(id);
-    }
+    public void deleteById(@PathVariable Long id) { reservationService.deleteById(id); }
 }

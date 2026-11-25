@@ -8,39 +8,45 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.domain.Vehicule;
 import tn.esprit.autoloc.service.IVehiculeService;
+import tn.esprit.autoloc.web.dto.VehiculeDTO;
+import tn.esprit.autoloc.web.dto.VehiculeMapper;
 
 import java.util.List;
 
 // Chap 6 : question 31 - contrôleur Vehicule
+// Atelier DTO - Question 9 : Utilisation du mapper
 @Tag(name = "Vehicules", description = "Gestion des véhicules")
 @RestController
 @RequestMapping("/vehicules")
 @RequiredArgsConstructor
 public class VehiculeController {
     private final IVehiculeService vehiculeService;
+    private final VehiculeMapper vehiculeMapper;
 
     @Operation(summary = "Lister tous les véhicules")
     @GetMapping
-    public List<Vehicule> findAll() {
-        return vehiculeService.findAll();
+    public List<VehiculeDTO> findAll() {
+        return vehiculeMapper.toDtoList(vehiculeService.findAll());
     }
 
     @Operation(summary = "Consulter un véhicule par son ID")
     @GetMapping("/{id}")
-    public Vehicule findById(@Parameter(description = "Identifiant du véhicule") @PathVariable Long id) {
-        return vehiculeService.findById(id);
+    public VehiculeDTO findById(@Parameter(description = "Identifiant du véhicule") @PathVariable Long id) {
+        return vehiculeMapper.toDto(vehiculeService.findById(id));
     }
 
     @Operation(summary = "Créer un nouveau véhicule")
     @PostMapping
-    public Vehicule create(@RequestBody Vehicule vehicule) {
-        return vehiculeService.create(vehicule);
+    public VehiculeDTO create(@RequestBody VehiculeDTO vehiculeDTO) {
+        Vehicule vehicule = vehiculeMapper.toEntity(vehiculeDTO);
+        return vehiculeMapper.toDto(vehiculeService.create(vehicule));
     }
 
     @Operation(summary = "Modifier un véhicule existant")
     @PutMapping("/{id}")
-    public Vehicule update(@PathVariable Long id, @RequestBody Vehicule vehicule) {
-        return vehiculeService.update(id, vehicule);
+    public VehiculeDTO update(@PathVariable Long id, @RequestBody VehiculeDTO vehiculeDTO) {
+        Vehicule vehicule = vehiculeMapper.toEntity(vehiculeDTO);
+        return vehiculeMapper.toDto(vehiculeService.update(id, vehicule));
     }
 
     @Operation(summary = "Supprimer un véhicule")
@@ -58,7 +64,7 @@ public class VehiculeController {
         vehiculeService.desaffecter(id);
     }
 
-    // Chap 9: Question 5 - API pour affecter une agence à un véhicule (les deux identifiants dans l'URL)
+    // Chap 9: Question 5 - API pour affecter une agence à un véhicule
     @Operation(summary = "Affecter une agence à un véhicule")
     @ApiResponse(responseCode = "200", description = "Véhicule affecté à l'agence avec succès")
     @ApiResponse(responseCode = "404", description = "Véhicule ou agence introuvable")

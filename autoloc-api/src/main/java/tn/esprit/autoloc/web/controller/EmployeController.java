@@ -7,44 +7,27 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.domain.Employe;
 import tn.esprit.autoloc.service.IEmployeService;
+import tn.esprit.autoloc.web.dto.EmployeDTO;
+import tn.esprit.autoloc.web.dto.EmployeMapper;
 
 import java.util.List;
 
-// Chap 6 : question 31 - contrôleur Employe
 @Tag(name = "Employes", description = "Gestion des employés")
 @RestController
 @RequestMapping("/employes")
 @RequiredArgsConstructor
 public class EmployeController {
     private final IEmployeService employeService;
+    private final EmployeMapper employeMapper;
 
-    @Operation(summary = "Lister tous les employés")
     @GetMapping
-    public List<Employe> findAll() {
-        return employeService.findAll();
-    }
-
-    @Operation(summary = "Consulter un employé par son ID")
+    public List<EmployeDTO> findAll() { return employeMapper.toDtoList(employeService.findAll()); }
     @GetMapping("/{id}")
-    public Employe findById(@Parameter(description = "Identifiant de l'employé") @PathVariable Long id) {
-        return employeService.findById(id);
-    }
-
-    @Operation(summary = "Créer un nouvel employé")
+    public EmployeDTO findById(@PathVariable Long id) { return employeMapper.toDto(employeService.findById(id)); }
     @PostMapping
-    public Employe create(@RequestBody Employe employe) {
-        return employeService.create(employe);
-    }
-
-    @Operation(summary = "Modifier un employé existant")
+    public EmployeDTO create(@RequestBody EmployeDTO dto) { return employeMapper.toDto(employeService.create(employeMapper.toEntity(dto))); }
     @PutMapping("/{id}")
-    public Employe update(@PathVariable Long id, @RequestBody Employe employe) {
-        return employeService.update(id, employe);
-    }
-
-    @Operation(summary = "Supprimer un employé")
+    public EmployeDTO update(@PathVariable Long id, @RequestBody EmployeDTO dto) { return employeMapper.toDto(employeService.update(id, employeMapper.toEntity(dto))); }
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id) {
-        employeService.deleteById(id);
-    }
+    public void deleteById(@PathVariable Long id) { employeService.deleteById(id); }
 }

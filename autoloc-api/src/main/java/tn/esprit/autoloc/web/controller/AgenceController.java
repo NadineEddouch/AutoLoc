@@ -10,6 +10,8 @@ import tn.esprit.autoloc.calcul.VehiculeOffre;
 import tn.esprit.autoloc.domain.Agence;
 import tn.esprit.autoloc.domain.Employe;
 import tn.esprit.autoloc.service.IAgenceService;
+import tn.esprit.autoloc.web.dto.AgenceDTO;
+import tn.esprit.autoloc.web.dto.AgenceMapper;
 
 import java.util.List;
 
@@ -18,18 +20,20 @@ import java.util.List;
 // Chap 6 : question 10 - dépendance sur IAgenceService
 // Chap 6 : question 11 - méthode findAll avec @GetMapping
 // Chap 6 : question 30 - enrichissement de la documentation avec SpringDoc
+// Atelier DTO - Question 5 : Utilisation du mapper pour convertir Entité <-> DTO
 @Tag(name = "Agences", description = "Gestion des agences de location")
 @RestController
 @RequestMapping("/agences")
 @RequiredArgsConstructor
 public class AgenceController {
     private final IAgenceService agenceService;
+    private final AgenceMapper agenceMapper;
 
     @Operation(summary = "Lister toutes les agences")
     @ApiResponse(responseCode = "200", description = "Liste des agences trouvée")
     @GetMapping
-    public List<Agence> findAll() {
-        return agenceService.findAll();
+    public List<AgenceDTO> findAll() {
+        return agenceMapper.toDtoList(agenceService.findAll());
     }
 
     // Chap 6 : question 19 - consultation d'une agence par ID via le chemin de l'URL
@@ -37,8 +41,8 @@ public class AgenceController {
     @ApiResponse(responseCode = "200", description = "Agence trouvée")
     @ApiResponse(responseCode = "404", description = "Agence introuvable")
     @GetMapping("/{id}")
-    public Agence findById(@Parameter(description = "Identifiant de l'agence") @PathVariable Long id) {
-        return agenceService.findById(id);
+    public AgenceDTO findById(@Parameter(description = "Identifiant de l'agence") @PathVariable Long id) {
+        return agenceMapper.toDto(agenceService.findById(id));
     }
 
     // Chap 6 : question 21 - API d'ajout d'une agence (POST)
@@ -46,8 +50,9 @@ public class AgenceController {
     @ApiResponse(responseCode = "200", description = "Agence créée avec succès")
     @ApiResponse(responseCode = "400", description = "Données invalides")
     @PostMapping
-    public Agence create(@RequestBody Agence agence) {
-        return agenceService.create(agence);
+    public AgenceDTO create(@RequestBody AgenceDTO agenceDTO) {
+        Agence agence = agenceMapper.toEntity(agenceDTO);
+        return agenceMapper.toDto(agenceService.create(agence));
     }
 
     // Chap 6 : question 24 - API de modification d'une agence (PUT)
@@ -56,8 +61,9 @@ public class AgenceController {
     @ApiResponse(responseCode = "404", description = "Agence introuvable")
     @ApiResponse(responseCode = "400", description = "Données invalides")
     @PutMapping("/{id}")
-    public Agence update(@PathVariable Long id, @RequestBody Agence agence) {
-        return agenceService.update(id, agence);
+    public AgenceDTO update(@PathVariable Long id, @RequestBody AgenceDTO agenceDTO) {
+        Agence agence = agenceMapper.toEntity(agenceDTO);
+        return agenceMapper.toDto(agenceService.update(id, agence));
     }
 
     // Chap 6 : question 25 - API de suppression d'une agence (DELETE)
@@ -86,9 +92,9 @@ public class AgenceController {
     @ApiResponse(responseCode = "200", description = "Employés ajoutés avec succès")
     @ApiResponse(responseCode = "404", description = "Agence introuvable")
     @PostMapping("/{id}/ajouter-employes")
-    public Agence ajouterEmployes(
+    public AgenceDTO ajouterEmployes(
             @Parameter(description = "Identifiant de l'agence") @PathVariable Long id,
             @RequestBody List<Employe> employes) {
-        return agenceService.ajouterEmployes(id, employes);
+        return agenceMapper.toDto(agenceService.ajouterEmployes(id, employes));
     }
 }

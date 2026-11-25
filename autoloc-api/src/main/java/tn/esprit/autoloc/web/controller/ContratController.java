@@ -7,44 +7,27 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.domain.Contrat;
 import tn.esprit.autoloc.service.IContratService;
+import tn.esprit.autoloc.web.dto.ContratDTO;
+import tn.esprit.autoloc.web.dto.ContratMapper;
 
 import java.util.List;
 
-// Chap 6 : question 31 - contrôleur Contrat
 @Tag(name = "Contrats", description = "Gestion des contrats de location")
 @RestController
 @RequestMapping("/contrats")
 @RequiredArgsConstructor
 public class ContratController {
     private final IContratService contratService;
+    private final ContratMapper contratMapper;
 
-    @Operation(summary = "Lister tous les contrats")
     @GetMapping
-    public List<Contrat> findAll() {
-        return contratService.findAll();
-    }
-
-    @Operation(summary = "Consulter un contrat par son ID")
+    public List<ContratDTO> findAll() { return contratMapper.toDtoList(contratService.findAll()); }
     @GetMapping("/{id}")
-    public Contrat findById(@Parameter(description = "Identifiant du contrat") @PathVariable Long id) {
-        return contratService.findById(id);
-    }
-
-    @Operation(summary = "Créer un nouveau contrat")
+    public ContratDTO findById(@PathVariable Long id) { return contratMapper.toDto(contratService.findById(id)); }
     @PostMapping
-    public Contrat create(@RequestBody Contrat contrat) {
-        return contratService.create(contrat);
-    }
-
-    @Operation(summary = "Modifier un contrat existant")
+    public ContratDTO create(@RequestBody ContratDTO dto) { return contratMapper.toDto(contratService.create(contratMapper.toEntity(dto))); }
     @PutMapping("/{id}")
-    public Contrat update(@PathVariable Long id, @RequestBody Contrat contrat) {
-        return contratService.update(id, contrat);
-    }
-
-    @Operation(summary = "Supprimer un contrat")
+    public ContratDTO update(@PathVariable Long id, @RequestBody ContratDTO dto) { return contratMapper.toDto(contratService.update(id, contratMapper.toEntity(dto))); }
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id) {
-        contratService.deleteById(id);
-    }
+    public void deleteById(@PathVariable Long id) { contratService.deleteById(id); }
 }

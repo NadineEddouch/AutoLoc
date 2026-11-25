@@ -7,42 +7,40 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.domain.Equipement;
 import tn.esprit.autoloc.service.IEquipementService;
+import tn.esprit.autoloc.web.dto.EquipementDTO;
+import tn.esprit.autoloc.web.dto.EquipementMapper;
 
 import java.util.List;
 
-// Chap 6 : question 31 - contrôleur Equipement
+// Atelier DTO - Question 9
 @Tag(name = "Equipements", description = "Gestion des équipements")
 @RestController
 @RequestMapping("/equipements")
 @RequiredArgsConstructor
 public class EquipementController {
     private final IEquipementService equipementService;
+    private final EquipementMapper equipementMapper;
 
-    @Operation(summary = "Lister tous les équipements")
     @GetMapping
-    public List<Equipement> findAll() {
-        return equipementService.findAll();
+    public List<EquipementDTO> findAll() {
+        return equipementMapper.toDtoList(equipementService.findAll());
     }
 
-    @Operation(summary = "Consulter un équipement par son ID")
     @GetMapping("/{id}")
-    public Equipement findById(@Parameter(description = "Identifiant de l'équipement") @PathVariable Long id) {
-        return equipementService.findById(id);
+    public EquipementDTO findById(@Parameter(description = "Identifiant de l'équipement") @PathVariable Long id) {
+        return equipementMapper.toDto(equipementService.findById(id));
     }
 
-    @Operation(summary = "Créer un nouvel équipement")
     @PostMapping
-    public Equipement create(@RequestBody Equipement equipement) {
-        return equipementService.create(equipement);
+    public EquipementDTO create(@RequestBody EquipementDTO equipementDTO) {
+        return equipementMapper.toDto(equipementService.create(equipementMapper.toEntity(equipementDTO)));
     }
 
-    @Operation(summary = "Modifier un équipement existant")
     @PutMapping("/{id}")
-    public Equipement update(@PathVariable Long id, @RequestBody Equipement equipement) {
-        return equipementService.update(id, equipement);
+    public EquipementDTO update(@PathVariable Long id, @RequestBody EquipementDTO equipementDTO) {
+        return equipementMapper.toDto(equipementService.update(id, equipementMapper.toEntity(equipementDTO)));
     }
 
-    @Operation(summary = "Supprimer un équipement")
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
         equipementService.deleteById(id);

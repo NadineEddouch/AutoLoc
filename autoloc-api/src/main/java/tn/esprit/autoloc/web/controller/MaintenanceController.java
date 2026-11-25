@@ -7,44 +7,27 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.domain.Maintenance;
 import tn.esprit.autoloc.service.IMaintenanceService;
+import tn.esprit.autoloc.web.dto.MaintenanceDTO;
+import tn.esprit.autoloc.web.dto.MaintenanceMapper;
 
 import java.util.List;
 
-// Chap 6 : question 31 - contrôleur Maintenance
 @Tag(name = "Maintenances", description = "Gestion des maintenances")
 @RestController
 @RequestMapping("/maintenances")
 @RequiredArgsConstructor
 public class MaintenanceController {
     private final IMaintenanceService maintenanceService;
+    private final MaintenanceMapper maintenanceMapper;
 
-    @Operation(summary = "Lister toutes les maintenances")
     @GetMapping
-    public List<Maintenance> findAll() {
-        return maintenanceService.findAll();
-    }
-
-    @Operation(summary = "Consulter une maintenance par son ID")
+    public List<MaintenanceDTO> findAll() { return maintenanceMapper.toDtoList(maintenanceService.findAll()); }
     @GetMapping("/{id}")
-    public Maintenance findById(@Parameter(description = "Identifiant de la maintenance") @PathVariable Long id) {
-        return maintenanceService.findById(id);
-    }
-
-    @Operation(summary = "Créer une nouvelle maintenance")
+    public MaintenanceDTO findById(@PathVariable Long id) { return maintenanceMapper.toDto(maintenanceService.findById(id)); }
     @PostMapping
-    public Maintenance create(@RequestBody Maintenance maintenance) {
-        return maintenanceService.create(maintenance);
-    }
-
-    @Operation(summary = "Modifier une maintenance existante")
+    public MaintenanceDTO create(@RequestBody MaintenanceDTO dto) { return maintenanceMapper.toDto(maintenanceService.create(maintenanceMapper.toEntity(dto))); }
     @PutMapping("/{id}")
-    public Maintenance update(@PathVariable Long id, @RequestBody Maintenance maintenance) {
-        return maintenanceService.update(id, maintenance);
-    }
-
-    @Operation(summary = "Supprimer une maintenance")
+    public MaintenanceDTO update(@PathVariable Long id, @RequestBody MaintenanceDTO dto) { return maintenanceMapper.toDto(maintenanceService.update(id, maintenanceMapper.toEntity(dto))); }
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id) {
-        maintenanceService.deleteById(id);
-    }
+    public void deleteById(@PathVariable Long id) { maintenanceService.deleteById(id); }
 }

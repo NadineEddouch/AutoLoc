@@ -7,26 +7,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.domain.Paiement;
 import tn.esprit.autoloc.service.IPaiementService;
+import tn.esprit.autoloc.web.dto.PaiementDTO;
+import tn.esprit.autoloc.web.dto.PaiementMapper;
 
 import java.util.List;
 
-// Chap 6 : question 31 - contrôleur Paiement (lecture seule)
 @Tag(name = "Paiements", description = "Gestion des paiements (lecture seule)")
 @RestController
 @RequestMapping("/paiements")
 @RequiredArgsConstructor
 public class PaiementController {
     private final IPaiementService paiementService;
+    private final PaiementMapper paiementMapper;
 
-    @Operation(summary = "Lister tous les paiements")
     @GetMapping
-    public List<Paiement> findAll() {
-        return paiementService.findAll();
-    }
-
-    @Operation(summary = "Consulter un paiement par son ID")
+    public List<PaiementDTO> findAll() { return paiementMapper.toDtoList(paiementService.findAll()); }
     @GetMapping("/{id}")
-    public Paiement findById(@Parameter(description = "Identifiant du paiement") @PathVariable Long id) {
-        return paiementService.findById(id);
-    }
+    public PaiementDTO findById(@PathVariable Long id) { return paiementMapper.toDto(paiementService.findById(id)); }
 }
